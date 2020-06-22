@@ -6,6 +6,7 @@ Initial Explainer:
             M -> Main Menu Parameters 
             S -> Simulator Parameters 
             G -> Game Mode Parameters 
+            H -> Help Screen Parameters 
 '''
 
 ## General Aspects 
