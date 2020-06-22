@@ -1,0 +1,6 @@
+** Information on Conways Game of Life 
+
+This is a rough draft of what will be outputted when a user request the event: "Help".
+
+
+Will just open and read in this file in a function in utils. 
