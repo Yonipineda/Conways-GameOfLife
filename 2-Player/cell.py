@@ -26,20 +26,34 @@ class Cell:
     def kill(self):
         '''Resets relevant attributes for when a cell will die.
         Does not change the NextState attribute'''
-        self.next_state = utils
+        self.next_state = utils.Dead
         self.next_player = 0 
         self.full_immune = False
         self.part_immune = False 
 
+    
+    def birth(self, state, player):
+        '''
+        Resets relevant attributes for when a cell will be born in the next turn.
+        Does not change NextState attribute
+        '''
+        self.next_state = state 
+        self.next_player = player 
+        self.full_immune = False
+        self.part_immune = False 
+
+
     def draw_cell(self, screen, size, board, color=None):
         '''Draw cell shape'''
         pass 
+
 
     def update(self, board=None, immunity=False):
         '''Put next_state attributes in current_state attribute.'''
         self.current_State = self.next_state
         self.current_player = self.next_player
         pass 
+    
 
     def check_cell_fate(self, board, players=False):
         '''
