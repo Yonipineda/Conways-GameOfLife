@@ -94,3 +94,40 @@ class MainMenu:
                     
             pygame.display.update() # update 
             fps_limiter.tick(constants.FPS)  # limits to a certain fps 
+
+
+class Simulation:
+    '''
+    Contains values to change how the game looks and behaves in simulator mode.
+    '''
+    def __init__(self):
+        # Will need to instantiate Simulator constants 
+        # build logic for sliders
+        pass
+
+    def run(self, screen, board):
+        '''
+        Runs the simulator 
+
+        Implement the logic to run the simulation 0.o
+        '''
+        pass
+
+    def check_user_input(self, screen, board):
+        '''
+        Check for user input and act accordingly. 
+
+        Event handling implementation??
+
+        Hover, keyword, keyboard, gps, interaction, etc..?
+        '''
+        pass 
+
+    def draw_gps_slider(self, screen, y, gps_limit, board):
+        '''
+        Draw sliders with the y coordinates
+        '''
+        pass 
+
+
+    
