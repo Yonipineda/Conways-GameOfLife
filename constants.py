@@ -1,5 +1,13 @@
 # Constant Parameters 
 
+'''
+Initial Explainer:
+
+            M -> Main Menu Parameters 
+            S -> Simulator Parameters 
+            G -> Game Mode Parameters 
+'''
+
 ## General Aspects 
 FONT = "Arial"  #  The font used in the game
 
@@ -15,8 +23,7 @@ M_BUTTONWIDTH = 450  # The width of the buttons
 M_BUTTONBORDER = 4  # The thickness of the borders on the buttons
 
 
-M_ButtonGapSize = 40  # 40
-#  The gap between each button
+M_BUTTONGAPSIZE = 40  # The gap between each button
 
 M_SIDEGAPSIZE = 250  
 #  The size of the gap at each side (between the button and the edge of the screen)
