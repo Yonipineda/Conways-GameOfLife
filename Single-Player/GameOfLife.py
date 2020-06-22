@@ -1,6 +1,5 @@
 import pygame
 import sys 
-import cell 
 
 # initialize Constants 
 # Constant variables: which is to say necessary stuff for the game
