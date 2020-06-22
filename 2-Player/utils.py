@@ -3,6 +3,7 @@ import constants
 import math 
 import time 
 import copy 
+import sys 
 
 # Initialize general constant parameters
 Font = constants.FONT 
@@ -130,4 +131,108 @@ class Simulation:
         pass 
 
 
-    
+
+class Game:
+    '''
+    Game Class   
+    '''
+    def __init__(self):
+        '''
+        Initialize all Game constants
+        '''
+        pass
+
+    def run(self, screen, board):
+        '''Runs the Game'''
+        pass 
+
+
+    def take_turn(self, screen, board, player_num):
+        ''' Returns the turn that the player wants to do '''
+        pass 
+
+    def check_turn_is_valid(self, board, turns, player_num, a, b, kill, turns_left):
+        '''
+         Returns whether or not the turn is valid:
+
+                        Return: [bool, int]
+
+                                bool -> whether or not turn was valid
+                                int -> num of turns the move should take
+        '''
+        pass 
+
+
+    def get_player_score(self, board, turns=None, player_num=0):
+        ''' 
+        Returns num of cells each player has on board
+        '''
+        pass 
+
+
+    def draw_right_column(self, screen, player_scores, on_button, turns_used,
+                          generated, clickable=None, update=True):
+                          '''
+                          Column drawn on right-handside of screen'''
+                          pass 
+
+
+    def check_for_wins(self, board, turns, generations):
+        ''' Check for wins '''
+        pass 
+
+
+
+class Help:
+    ''' Help Class ''' 
+    def __init__(self):
+        '''
+        Initialize Help constants
+        '''
+        pass 
+
+
+    def display(self, screen):
+        '''
+        Displays help page on the given screen
+        '''
+        pass 
+
+    def draw(self, screen, help_surface, slider_centre, slider_range):
+        '''
+        Draw the right hand side bit of text and slider at given levels
+        '''
+        pass 
+
+
+    def get_surfaces(self):
+        '''
+        Retrieves surfaces for the help screen. 
+        '''
+        pass 
+
+
+    def write(self, screen, x, y, text, color, size, max_len=None, gap=0, rotate=0,
+              alignment=("left", "top")):
+              '''
+              Puts text onto the screen at point x,y. 
+              '''
+              pass 
+
+
+    def check_quit(self, events):
+        '''
+        Checks whether the player tried to quit the game.
+
+        Bool: Returned for corresponding ESC key pressed.
+        '''
+        pass 
+
+
+    def quit_game(self):
+        ''' Quits Game ''' 
+        pygame.quit()
+        sys.exit(0)
+
+
+
