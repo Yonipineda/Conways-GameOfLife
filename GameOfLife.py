@@ -25,13 +25,18 @@ class LifeGame:
         # Screen output when running 
         self.screen =  pygame.display.set_mode(BOARD_SIZE)
 
-        game_grid_active = [
-                [0,0,0],
-                [0,0,0],
-                [0,0,0],
+        # Initialize Grid 
+        self.init_grid()
+
+    def init_grid(self):
+        '''Active Grid and Inactive Grid as an empty array'''
+        self.game_grid_active = [
+            [0,0,0],
+            [0,0,0],
+            [0,0,0],
         ]
 
-        game_grid_inactive = []
+        self.game_grid_inactive = []
 
     def clear_screen(self):
         '''Clears screen'''
@@ -42,27 +47,48 @@ class LifeGame:
         # If the grid is inactive, update it to store new generations 
         # And, swap out the active grid 
         pass 
-          
+
+    def draw_grid(self):
+        # Create shapes -> Circle 
+        #circle_rect = pygame.draw.circle(self.screen, ALIVE_COLORS, (50,50), 5, 0)
+        pygame.display.flip()
+             
+    def handle_events(self):
+        '''
+        Event Handler
+        
+        Params: 
+                s -> Start
+                r -> Randomize 
+                q -> Quit 
+        '''
+        for event in pygame.event.get():
+                if event.type == pygame.QUIT: sys.exit() 
 
     def run_game(self):
+        # Clear screen 
+        self.clear_screen()
 
-        # Create shapes -> Circle 
-        circle_rect = pygame.draw.circle(self.screen, ALIVE_COLORS, (50,50), 5, 0)
-
-
+        # Flip 
         pygame.display.flip()
 
 
         while True: 
-            self.clear_screen()
             # For Keyword 's' in event, pause game. 
             # For Keyword 'r' in event, randomize game. 
             # For Keyword 'q' in event, quit game. 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT: sys.exit() 
+            self.handle_events()
+
+            # Update the generation 
+            self.update_generation()
+
+            # Draw the grid 
+            self.draw_grid()
 
             # Starts with a black screen 
             self.screen.fill(DEAD_COLORS)
+ 
+
 
             
 

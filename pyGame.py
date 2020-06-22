@@ -2,6 +2,8 @@
 # I want to deploy to heroku using Flask and some html templates
 # If that is not possible, given the time contraint, Ill push to pypi 
 
+# Beta Version
+
 class Game:
     '''
     Defining the Game Class. 

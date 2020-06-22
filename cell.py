@@ -1,17 +1,18 @@
+import pygame 
+import random 
+import grid
+import utils 
+import copy 
+
 class Cell:
     '''Cell class''' 
-    def __init__(self, alive=False):
-        '''Params:  alive -> False as Default'''
-        self.alive = alive 
-
-    def cell_state(self):
-        if self.alive:
-            self.alive = False
-        else:
-            self.alive = True 
-
-    def __str__(self):
-        return str(self.alive) 
-
-    def __repr__(self):
-        return self.__str__()
+    def __init__(self, a, b, current_state, next_state, board,
+                 player, part_immune=False, alive_for=0):
+                 '''a, b: Coordinates for the cells with respect to the board.'''
+                 self.current_State = current_state
+                 self.next_state = next_state
+                 self.board_pos = (a, b)
+                 self.alive_for = alive_for
+                 self.part_immune = part_immune
+                 self.full_immune = False 
+                 self.coordinates = ((self.board_pos[0] - board.Cushion) * board.Size)
