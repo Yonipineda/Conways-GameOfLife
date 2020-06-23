@@ -174,6 +174,10 @@ class LifeGame:
                     self.set_grid(0, self.inactive_grid())  
                     self.draw_grid()
 
+                elif event.unicode == 'c':
+                    print("Clearing Screen")
+                    self.screen.fill(self.dead_color)
+
                 elif event.unicode == 'q':
                     print("Exiting Game.")
                     self.game_over = True
