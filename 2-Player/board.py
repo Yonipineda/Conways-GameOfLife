@@ -24,7 +24,7 @@ class Board:
             self.part_immune_time = state.part_immune_time
             self.full_immune_time = state.full_immune_time
 
-        self.cell = [[cell(a, b, utils.Square, utils.Dead, self, 0)
+        self.cell = [[cell.Cell(a, b, utils.Square, utils.Dead, self, 0)
                      for b in range(self.height + (2 * self.cushion))]
                      for a in range(self.width + 2 * self.cushion)]
 
@@ -34,3 +34,28 @@ class Board:
         Function for setting up the board w/ chances of cells being born or killed
         '''
         pass 
+
+
+class SimulationBoard(Board):
+    '''Board for the simulator'''
+    def place_preset(self, screen, preset_num, a, b):
+        # Using the preset grids in grid.py
+        if self.wrap:
+            shape = grid.get(preset_num, a, b, self)[0]
+        else: 
+            shape, a, b = grid.get(preset_num, a, b, self)
+        
+        for i in range(len(shape)):
+            for j in range(len(shape[i])):
+                if self.wrap:
+                    if a + i >= self.width + 2 * self.cushion:
+                        a -= self.width + 2 * self.cushion
+                    if b + j >= self.height + 2 * self.cushion:
+                        b -= self.height + 2 * self.cushion
+                if shape[i][j] == 0:
+                    self.cell[a + i][b + j].kill()
+                else:
+                    self.cell[a + i][b + j].birth(shape[i][j], 0)
+        
+        self.update()
+        self.draw(screen)
