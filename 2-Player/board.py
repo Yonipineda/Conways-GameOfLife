@@ -59,7 +59,9 @@ class Board:
         NextState is changed here.
         Puts the nextstate var in the currentstate var and updates immunity if applicable.
         '''
-        pass
+        for a in range(self.width + 2 * self.cushion):
+            for b in range(self.height + 2 * self.cushion):
+                self.cell[a][b].update(board=self, immunity=immunity)
 
 
     def take_turn(self, update_caption=False, players=False):
