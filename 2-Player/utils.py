@@ -340,7 +340,43 @@ def write(self, screen, x, y, text, color, size, max_len=None, gap=0, rotate=0,
             '''
             Puts text onto the screen at point x,y. 
             '''
-            pass 
+            font_obj = pygame.font.SysFont(font, size)
+            if text == "": # checks if its a blank line
+                line = 1 
+                extra_space = size 
+            else:
+                line = 0 
+                extra_space = 0
+
+            while len(text.split()) > 0: 
+                line += 1 
+                msg_surface_obj = pygame.transform.rotate(font_obj.render(text, false, color), rotate)
+                used = len(text.split()) # amount of text not used thus far 
+                while max_len is not None and msg_surface_obj.get_width() > max_len:
+                    used -= 1 
+                    msg_surface_obj = pygame.transform.rotate(font_obj.render(" ".join(text.split()[:used]),
+                                                              False, color), rotate)
+                    
+                    msg_surface_obj = msg_surface_obj.get_rect()
+                    a, b = msg_surface_obj.get_size()
+
+                    if alignment[0] == "centre":
+                        new_x = x - a // 2
+                    else:
+                        new_x = x 
+                    if alignment[1] == "centre":
+                        new_y = y - b // 2
+                    elif alignment[1] == "bottom":
+                        new_y = y - b
+                    else:
+                        new_y = y 
+
+                    msg_surface_obj.topleft = (new_x, new_y) # coordinates of new merged object 
+                    screen.blit(msg_surface_obj, msg_rect_obj.get_height() + gap)
+                    text = " ".join(text.split()[used:]) # delete text 
+
+                return extra_space
+
 
 
 def check_quit(self, events):
