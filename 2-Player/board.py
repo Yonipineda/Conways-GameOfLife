@@ -15,7 +15,7 @@ class Board:
         self.cell_gap = state.cell_gap 
         self.generations = 0
         self.cushion = state.cushion 
-        self.get_square = lambda x, y: (min(x // self.size, self.width) self.cushion,
+        self.get_square = lambda x, y: (min(x // self.size, self.width) + self.cushion,
                                         min(y // self.size, self.height) + self.cushion)
         self.color = state.color 
         self.preview_size = state.preview_size
