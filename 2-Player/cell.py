@@ -17,10 +17,10 @@ class Cell:
                  self.alive_for = alive_for
                  self.part_immune = part_immune
                  self.full_immune = False 
-                 self.coordinates = ((self.board_pos[0] - board.Cushion) * board.Size
-                                      + (board.CellGap + board.Size) // 2,
-                                      (self.board_pos[1] - board.Cushion) * board.Size 
-                                      + (board.CellGap + board.Size) // 2)
+                 self.coordinates = ((self.board_pos[0] - board.cushion) * board.size
+                                      + (board.cell_gap + board.size) // 2,
+                                      (self.board_pos[1] - board.cushion) * board.size 
+                                      + (board.cell_gap + board.size) // 2)
 
 
     def kill(self):

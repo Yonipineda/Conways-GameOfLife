@@ -55,5 +55,5 @@ def get(shape_num, a, b, state):
 
     else: shape = [[0]]
 
-    return (shape, min(a, state.Width + 2 * state.Cushion - len(shape)),
-            min(b, state.Height + 2 * state.Cushion - len(shape[0])))
+    return (shape, min(a, state.width + 2 * state.cushion - len(shape)),
+            min(b, state.height + 2 * state.cushion - len(shape[0])))
