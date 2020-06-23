@@ -62,6 +62,21 @@ class Board:
         pass
 
 
+    def take_turn(self, update_caption=False, players=False):
+        '''
+        Changes nextstate var and updates the display caption
+        '''
+        pass
+
+    
+    def reset(self, state):
+        '''
+        Resets board with no alive cells. Plain dark screen, or white.. idk yet.s
+        '''
+        self.__init__(state, players=self.players)
+        self.update()
+
+
 class SimulationBoard(Board):
     '''Board for the simulator'''
     def place_preset(self, screen, preset_num, a, b):
