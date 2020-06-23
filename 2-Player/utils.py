@@ -157,7 +157,7 @@ class Simulation:
             board.update()
             # checks if the board should be updated 
             if (not self.paused 
-                and (not self.gps_is_limited or time.time() - last_frame > 1 / self.gps)) \ 
+                and (not self.gps_is_limited or time.time() - last_frame > 1 / self.gps))\
                 or (self.paused and self.one_turn): 
 
                 if self.one_turn:
@@ -167,7 +167,7 @@ class Simulation:
                 board.update()
                 board.generations += 1
                 board.draw(screen)
-                last_frame = time.time() # store the time the screen was updated to limit the gps
+                last_frame = time.time() # store the time the screen was updated to limit the
 
 
 
