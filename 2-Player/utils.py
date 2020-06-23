@@ -179,7 +179,73 @@ class Simulation:
 
         Hover, keyword, keyboard, gps, interaction, etc..?
         '''
-        pass 
+        # checks if player tried to quit the game
+        go_back = check_quit(pygame.event.get()) 
+
+        # check user position
+        x, y = pygame.mouse.get_pos()
+        a, b = board.get_square(x, y)
+        if pygame.key.get_pressed()[pygame.K_SPACE] and not self.held_down["space"]:
+            self.paused = not self.paused
+        if pygame.key.get_pressed()[pygame.K_F] and not self.held_down["f"]:
+            self.gps_is_limited = not self.gps_is_limited
+            bottom_gps_log = math.log(self.bottom_gps, self.top_gps)
+            self.draw_gps_slider(screen, self.end_of_slider 
+                                 - ((math.log(self.gps, self.top_gps) - bottom_gps_log)
+                                    * (self.end_of_slider - self.start_of_slider))
+                                    // (1 - bottom_gps_log), self.gps_is_limited, board)
+        
+        if pygame.key.get_pressed()[pygame.K_RIGHT] and not self.held_down["right"]:
+            self.one_turn = True 
+        else: 
+            self.one_turn = False
+        
+        if pygame.key.get_pressed()[pygame.K_RETURN]:
+            board.reset(self)
+            board.draw(screen)
+            self.paused = True 
+        if pygame.mouse.get_pressed()[0]:
+            if board.size * board.width + board.cell_gap / 2 < x < (
+                board.size * board.width) + self.slider_size + board.cell_gap / 2:
+
+                if y < self.start_of_slider:  # restricts player from dragging the slider
+                    y = self.start_of_slider  # out of where it should be
+                elif y > self.end_of_slider:
+                    y = self.end_of_slider
+                
+                self.gps_is_limited = True 
+                self.draw_gps_slider(screen, y, self.gps_is_limited, board)
+                bottom_gps_log = math.log(self.bottom_gps, self.top_gps)
+                self.gps = self.top_gps ** (((1 - bottom_gps_log) * (self.end_of_slider - y)
+                                            / (self.end_of_slider - self.start_of_slider))
+                                            + bottom_gps_log)
+
+            elif 0 <= a < board.width + board.cushion and 0 <= b < board.height + board.cushion:
+                board.cell[a][b].birth(Square, 0)
+                board.update()
+                board.draw(screen)
+        
+        if pygame.mouse.get_pressed()[2] and 0 <= a < board.width\ 
+                + board.cushion and 0 <= b < board.height + board.cushion:
+                board.cell[a][b].kill()
+                board.update()
+                board.draw(screen)
+        
+        number_pressed = False 
+
+        for key in range(pygame.K_1, pygame.K_9):
+            if pygame.key.get_pressed()[key]:
+                if not self.held_down["number"]:
+                    board.place_preset(screen, int(pygame.key.name(key)), a, b)
+                number_pressed = True 
+        self.held_down["number"] = number_pressed
+        for key in (("space", "SPACE"), ("f", "f"), ("right", "RIGHT")):
+            self.held_down[key[0]] = eval("pygame.key.get_pressed()[pygame.K_%s]" % key[1])
+
+        return go_back
+        
+                        
+
 
     def draw_gps_slider(self, screen, y, gps_limit, board):
         '''
