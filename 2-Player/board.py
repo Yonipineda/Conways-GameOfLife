@@ -47,7 +47,7 @@ class Board:
         if sum(chances) != 0:  # checks if there is a chance of birth 
             for a in range(width):
                 for b in range(height):
-                    n = random.randint(1, sum(chance))
+                    n = random.randint(1, sum(chances))
                     for c in range(len(chances)): # random assignment of new state or player cell
                         if sum(chances[:c + 1]) > n: # according to chances defined in constants.py
                             if c != 0:
@@ -64,7 +64,7 @@ class Board:
                         if self.cell[a][b].current_player != 0:
                             player = self.cell[a][b].current_player + 1
                             if player > rotational_symmetry:
-                                player -= rotational_symmetry:  # find players cell
+                                player -= rotational_symmetry  # find players cell
                             if width > height: # birth expected 
                                 self.cell[a][height + b].birth(self.cell[a][b].current_State, player)
                             else:
@@ -81,7 +81,7 @@ class Board:
                     if self.cell[a][b].current_player != 0:
                         player = self.cell[a][b].current_player + rotational_symmetry // 2
                         if player > rotational_symmetry: # find player cell
-                            player -= rotational_symmetry: # birth
+                            player -= rotational_symmetry # birth
                         self.cell[-1 - a][-1 - b].birth(self.cell[a][b].current_State, player)
             self.update()
 
