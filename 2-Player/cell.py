@@ -43,7 +43,7 @@ class Cell:
         self.part_immune = False 
 
 
-    def draw_cell(self, screen, size, board, color=None):
+    def draw(self, screen, size, board, color=None):
         '''Draw cell shape'''
         pass 
 
@@ -52,7 +52,12 @@ class Cell:
         '''Put next_state attributes in current_state attribute.'''
         self.current_State = self.next_state
         self.current_player = self.next_player
-        pass 
+        if immunity and not self.full_immune and not self.current_State == utils.Dead:
+            if self.alive_for >= board.full_immune_time:
+                self.full_immune = True 
+            elif self.alive_for >= board.part_immune_time:
+                self.part_immune = True 
+            self.alive_for += 1
     
 
     def check_cell_fate(self, board, players=False):
@@ -60,4 +65,4 @@ class Cell:
         Check whether the cell will be dead or alive at the end of the turn.
         If so, what will be the type.
         '''
-        pass 
+        pass
