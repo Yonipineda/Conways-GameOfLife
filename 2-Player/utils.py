@@ -339,7 +339,7 @@ def write(self, screen, x, y, text, color, size, max_len=None, gap=0, rotate=0,
             '''
             Puts text onto the screen at point x,y. 
             '''
-            font_obj = pygame.font.SysFont(font, size)
+            font_obj = pygame.Font.SysFont(Font, size)
             if text == "": # checks if its a blank line
                 line = 1 
                 extra_space = size 
@@ -371,7 +371,7 @@ def write(self, screen, x, y, text, color, size, max_len=None, gap=0, rotate=0,
                         new_y = y 
 
                     msg_surface_obj.topleft = (new_x, new_y) # coordinates of new merged object 
-                    screen.blit(msg_surface_obj, msg_rect_obj.get_height() + gap)
+                    screen.blit(msg_surface_obj, msg_surface_obj.get_height() + gap)
                     text = " ".join(text.split()[used:]) # delete text 
 
                 return extra_space
