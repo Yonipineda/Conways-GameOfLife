@@ -335,27 +335,33 @@ class Help:
         pass 
 
 
-    def write(self, screen, x, y, text, color, size, max_len=None, gap=0, rotate=0,
-              alignment=("left", "top")):
-              '''
-              Puts text onto the screen at point x,y. 
-              '''
-              pass 
+def write(self, screen, x, y, text, color, size, max_len=None, gap=0, rotate=0,
+            alignment=("left", "top")):
+            '''
+            Puts text onto the screen at point x,y. 
+            '''
+            pass 
 
 
-    def check_quit(self, events):
-        '''
-        Checks whether the player tried to quit the game.
+def check_quit(self, events):
+    '''
+    Checks whether the player tried to quit the game.
 
-        Bool: Returned for corresponding ESC key pressed.
-        '''
-        pass 
+    Bool: Returned for corresponding ESC key pressed.
+    '''
+    for event in events:
+        if event.type == pygame.QUIT:
+            quit_game()
+        if pygame.key.get_pressed()[pygame.K_SPACE]:
+            return True 
+    
+    return False 
 
 
-    def quit_game(self):
-        ''' Quits Game ''' 
-        pygame.quit()
-        sys.exit(0)
+def quit_game(self):
+    ''' Quits Game ''' 
+    pygame.quit()
+    sys.exit(0)
 
 
 
