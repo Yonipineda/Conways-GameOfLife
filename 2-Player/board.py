@@ -35,6 +35,32 @@ class Board:
         '''
         pass 
 
+    
+    def draw(self, screen, preview=False, update_display=True):
+        '''
+        Draws the current board and updates the display
+        '''
+        if preview:
+            size = self.preview_size
+        else:
+            size = self.size - self.cell_gap
+        
+        for a in range(self.cushion, self.cushion + self.width):
+            for b in range(self.cushion, self.cushion + self.height):
+                if not preview or not (self.cell[a][b].part_immune or self.cell[a][b].full_immune):
+                    self.cell[a][b].draw(screen, size, self)
+        
+        if update_display:
+            pygame.display.update()
+
+    
+    def update(self, immunity=False):
+        '''
+        NextState is changed here.
+        Puts the nextstate var in the currentstate var and updates immunity if applicable.
+        '''
+        pass
+
 
 class SimulationBoard(Board):
     '''Board for the simulator'''
