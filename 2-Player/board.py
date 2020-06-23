@@ -175,3 +175,21 @@ class GameBoard(Board):
         should be able to show how the board will look like a generation ahead.
         '''
         pass 
+
+
+    def show_alive(self, screen, size, colors, turns, player):
+        '''
+        shows cells as numbers w/ info such as how long they've been alive.
+        '''
+        pass 
+
+
+    def impose_turns(self, turn, player_num):
+        '''
+        Saw this neat function in a website.
+
+        Basically it takes the turns on the board and does something like this:
+                                        
+                                [generations_at_turn_num, [[a, b, kill?]...]]
+        '''
+        pass
