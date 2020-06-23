@@ -140,7 +140,36 @@ class Simulation:
 
         Implement the logic to run the simulation 0.o
         '''
-        pass
+        pygame.display.set_caption("Conways Game of Life")
+        pygame.display.set_mode((board.size * board.width + self.slider_size,
+                                 board.size * board.height))
+
+        screen.fill(self.color["Background"])
+        self.draw_gps_slider(screen, ((math.log(self.gps, 10) + 1) // -3)
+                             * (self.end_of_slider - self.start_of_slider) 
+                             + self.end_of_slider, self.gps_is_limited, board)
+
+        last_frame = time.time()
+        board.update()
+        board.draw(screen)
+
+        while not self.check_user_input(screen, board):
+            board.update()
+            # checks if the board should be updated 
+            if (not self.paused 
+                and (not self.gps_is_limited or time.time() - last_frame > 1 / self.gps)) \ 
+                or (self.paused and self.one_turn): 
+
+                if self.one_turn:
+                    self.one_turn = False
+
+                board.take_turn(update_caption=True)
+                board.update()
+                board.generations += 1
+                board.draw(screen)
+                last_frame = time.time() # store the time the screen was updated to limit the gps
+
+
 
     def check_user_input(self, screen, board):
         '''
