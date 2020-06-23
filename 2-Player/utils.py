@@ -225,11 +225,10 @@ class Simulation:
                 board.update()
                 board.draw(screen)
         
-        if pygame.mouse.get_pressed()[2] and 0 <= a < board.width\ 
-                + board.cushion and 0 <= b < board.height + board.cushion:
-                board.cell[a][b].kill()
-                board.update()
-                board.draw(screen)
+        if pygame.mouse.get_pressed()[2] and 0 <= a < board.width + board.cushion and 0 <= b < board.height + board.cushion:
+            board.cell[a][b].kill()
+            board.update()
+            board.draw(screen)
         
         number_pressed = False 
 
