@@ -45,7 +45,28 @@ class Cell:
 
     def draw(self, screen, size, board, color=None):
         '''Draw cell shape'''
-        pass 
+        x, y = self.coordinates 
+        if color is None:
+            # draw the dead cells
+            pygame.draw.rect(screen, board.color["Dead"], 
+                             (x - size // 2, y - size // 2, size, size)) 
+            
+            if not self.current_State == utils.Dead:
+                if self.part_immune:
+                    pygame.draw.circle(screen, board.color["Player" + str(self.current_player)],
+                                       (x, y), size // 2)
+
+            elif self.current_player == 0:
+                pygame.draw.rect(screen, board.color["Alive"], (x - size //2, y - size // 2,
+                                                                size, size))
+
+            else: 
+                pygame.draw.rect(screen, board.color["Player" + str(self.current_player)],
+                                 (x - size // 2, y - size // 2, size, size))
+            
+        else:
+            pygame.draw.rect(screen, color, (x - size // 2, y - size // 2, size, size))
+
 
 
     def update(self, board=None, immunity=False):
