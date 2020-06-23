@@ -68,7 +68,21 @@ class Board:
         '''
         Changes nextstate var and updates the display caption
         '''
-        pass
+        if update_caption:
+            pygame.display.set_caption("Conways Game of Life: Generation" + str(self.generations))
+        if self.wrap:
+            cushion = 0 
+        else: 
+            cushion = 1 # iterates through all cells and kills or births the cell 
+        
+        for a in range(cushion, self.width + (2 * self.cushion) - cushion):
+            for b in range(cushion, self.height + (2 * self.cushion) - cushion):
+                fate, player = self.cell[a][b].check_cell_fate(self, players=players)
+                if self.cell[a][b].current_State != fate or self.cell[a][b].current_player != player:
+                    if fate == utils.Dead:
+                        self.cell[a][b].kill()
+                    else:
+                        self.cell[a][b].birth(fate, player)
 
     
     def reset(self, state):
