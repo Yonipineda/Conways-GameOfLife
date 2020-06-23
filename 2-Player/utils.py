@@ -16,7 +16,7 @@ Square = 1
 class Player:
     '''Player Class'''
     def __init__(self, number, color, starting_turns):
-        self.numver = number 
+        self.number = number 
         self.color = color 
         self.num_of_cells = 0
         self.spare_turns = starting_turns 
@@ -104,7 +104,35 @@ class Simulation:
     def __init__(self):
         # Will need to instantiate Simulator constants 
         # build logic for sliders
-        pass
+        self.width = constants.S_WIDTH
+        self.height = constants.S_HEIGHT
+        self.size = constants.S_SIZE
+        self.cell_gap = constants.S_CELLGAP
+        self.wrap = constants.S_WRAP
+        self.cushion = constants.S_CUSHION
+        self.preview_size = 0
+        self.set_up_chances = constants.S_SETUPCHANCES
+        self.slider_size = constants.S_SLIDERSIZE
+        self.highlight_size = constants.S_HIGHLIGHTSIZE
+        self.num_of_notches = constants.S_NUMOFNOTCHES
+        self.notch_length = constants.S_NOTCHLENGTH
+        self.start_of_slider = 2 * constants.S_NOTCHLENGTH
+        self.speed_size = constants.S_SPEEDSIZE
+        self.end_of_slider = self.height * self.size - self.highlight_size - self.notch_length
+        self.space_between_notches = (self.end_of_slider - self.start_of_slider) / (self.num_of_notches - 2)
+        self.slider_y = self.size * self.width + self.cell_gap // 2 + self.slider_size // 2
+        self.button_start = self.size * self.width
+        self.gps = constants.S_GPS
+        self.top_gps = constants.S_TOPGPS
+        self.bottom_gps = constants.S_BOTTOMGPS
+        self.gps_is_limited = True 
+        self.paused = True 
+        self.one_turn = False 
+        self.held_down = {"space": True,
+                          "right": True,
+                          "number": True,
+                          "f": True}  # Track whether a button as been pressed or held down
+        self.color = constants.S_COLOR
 
     def run(self, screen, board):
         '''
