@@ -116,3 +116,12 @@ class SimulationBoard(Board):
         
         self.update()
         self.draw(screen)
+
+
+class GameBoard(Board):
+    def show_future(self, screen, actions, player, smaller=True, immunity=True):
+        '''
+        If I can figure out how the heck im going to do this, this child class 
+        should be able to show how the board will look like a generation ahead.
+        '''
+        pass 
