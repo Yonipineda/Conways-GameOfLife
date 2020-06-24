@@ -334,7 +334,7 @@ class Help:
         pass 
 
 
-def write(self, screen, x, y, text, color, size, max_len=None, gap=0, rotate=0,
+def write(self, screen, x, y, text, color, size, max_len=None, gap=0,Font=Font, rotate=0,
             alignment=("left", "top")):
             '''
             Puts text onto the screen at point x,y. 
@@ -349,7 +349,7 @@ def write(self, screen, x, y, text, color, size, max_len=None, gap=0, rotate=0,
 
             while len(text.split()) > 0: 
                 line += 1 
-                msg_surface_obj = pygame.transform.rotate(font_obj.render(text, false, color), rotate)
+                msg_surface_obj = pygame.transform.rotate(font_obj.render(text, False, color), rotate)
                 used = len(text.split()) # amount of text not used thus far 
                 while max_len is not None and msg_surface_obj.get_width() > max_len:
                     used -= 1 

@@ -174,14 +174,30 @@ class GameBoard(Board):
         If I can figure out how the heck im going to do this, this child class 
         should be able to show how the board will look like a generation ahead.
         '''
-        pass 
+        temp_board = copy.deepcopy(self)
+        temp_board.impose_turns(actions. player)
+        temp_board.draw(screen, update_display=False)
+        if smaller:
+            temp_board.take_turn(players=True)
+            temp_board.update(immunity=immunity)
+            temp_board.draw(screen, preview=True)
+         
 
 
     def show_alive(self, screen, size, colors, turns, player):
         '''
         shows cells as numbers w/ info such as how long they've been alive.
         '''
-        pass 
+        temp_board = copy.deepcopy(self) 
+        temp_board.imp4(turns, player)
+        for a in temp_board.cell:
+            for b in a:
+                b.draw(screen, self.size - self.cell_gap, self)
+                if not b.current_player == 0:
+                    utils.write(screen, b.coordinates[0] + self.size // 2,
+                                b.coordinates[1] + self.size // 2,
+                                str(b.alive_for), colors["Dead"], size,
+                                alignment=("centre", "centre"))
 
 
     def impose_turns(self, turn, player_num):
@@ -192,4 +208,15 @@ class GameBoard(Board):
                                         
                                 [generations_at_turn_num, [[a, b, kill?]...]]
         '''
-        pass
+        for a in range(len(turn[1])):
+            if turn[0] == a:
+                self.take_turn()
+                self.update(immunity=True)
+            if turn[1][a][2]:
+                self.cell[turn[1][a][0]][turn[1][a][1]].kill()
+            else:
+                self.cell[turn[1][a][0]][turn[1][a][1]].birth(utils.Square, player_num)
+            self.cell[turn[1][a][0]][turn[1][a][1]].update()
+        if turn[0] == len(turn[1]):
+            self.take_turn(players=True)
+            self.update(immunity=True)
