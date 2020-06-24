@@ -86,4 +86,46 @@ class Cell:
         Check whether the cell will be dead or alive at the end of the turn.
         If so, what will be the type.
         '''
-        pass
+        if self.part_immune:
+            return self.current_State, self.current_player
+        player = [0,0,0,0,0]
+        a, b = self.board_pos
+        # neighbors
+        al = a - 1  # a left
+        ar = a + 1  # a right 
+        bu = b - 1  # b top
+        bd = b + 1  # b bottom
+
+        if board.wrap and a == board.width + 2 * board.cushion - 1:
+            ar = 0 
+        if board.wrap and b == board.height + 2 * board.cushion - 1:
+            bd = 0
+        alive = 0 
+        for c in (a, ar, al): # checks all cells < 1 away in each direction
+            for d in (b, bu, bd):
+                if not (c == a and d == b) and board.cell[c][d].current_State == utils.Square:
+                    alive += 1
+        
+        new_state = self.current_State
+        new_player = self.current_player
+        birth = False 
+        death = False 
+        if self.current_State == utils.Dead and alive == 3:
+            birth = True 
+            new_state = utils.Square
+        elif self.current_State == utils.Square and alive not in (2,3):
+            death = True
+            new_state = utils.Dead
+        
+        if players:
+            if death:
+                new_player = 0
+            if birth:
+                for c in (a, ar, al):
+                    for d in (b, bu, bd):
+                        if not (c == a and d == b):
+                            player[board.cell[c][d].current_player] += 1
+                del player[0]
+                new_player = player.index(max(player)) + 1
+
+        return new_state, new_player
