@@ -311,14 +311,79 @@ class Help:
         '''
         Initialize Help constants
         '''
-        pass 
+        self.section_gap_size = constants.H_SECTIONGAPSIZE
+        self.text_size = constants.H_TEXTSIZE
+        self.title_size = constants.H_TITLESIZE
+        self.indent_size = constants.H_INDENTSIZE
+        self.slider_width = constants.H_SLIDERWIDTH
+        self.slider_gap_size = constants.H_SLIDERGAPSIZE
+        self.slider_length = constants.H_SLIDERLENGTH
+        self.width = constants.H_Width
+        self.height = 600 
+        self.scroll_amount = constants.H_SCROLLAMOUNT
+        self.color = constants.H_COLOR
+        self.surfaces = self.get_surfaces()
+       
 
 
     def display(self, screen):
         '''
         Displays help page on the given screen
         '''
-        pass 
+        pygame.display.set_caption("Conways Game of Life: Help Screen")
+        pygame.display.set_mode((self.width, self.surfaces[0].get_height()))
+        screen.fill(self.color["Background"])
+        self.height = screen.get_height()
+        slider_range = (self.slider_gap_size + self.slider_length // 2,
+                        self.height - self.slider_gap_size - self.slider_length // 2)
+        slider_centre = slider_range[0]
+        help_rect = self.surfaces[0].get_rect()
+        help_rect.topleft = (self.section_gap_size, self.section_gap_size)
+        screen.blit(self.surfaces[0], help_rect)
+        self.draw(screen, self.surfaces[1], slider_centre, slider_range)
+        slider_last_turn = False 
+        fps_limiter = pygame.time.Clock()
+
+        while True:
+            events = pygame.event.get()
+            if check_quit(events):
+                break 
+        x, y = pygame.mouse.get_pos()
+        if pygame.mouse.get_pressed()[0]:
+            if slider_last_turn:
+                y = max(min(y + slider_range - mouse_start, slider_range[1]), slider_range[0])
+                self.draw(screen, self.surfaces[1], y, slider_range)
+            elif -2 * self.slider_gap_size - self.slider_width < x - self.width < 0:
+                slider_last_turn = 0 
+                mouse_start = y 
+                # if mouse not clicked 
+                if not slider_centre - self.slider_length / 2 < y < slider_centre + self.slider_length / 2:
+                    slider_centre = y 
+                
+        elif slider_last_turn:
+            slider_last_turn = False
+            slider_centre += y - mouse_start # reset position of the slider
+        
+        if x > (self.width - self.slider_width - self.section_gap_size) / 2 - self.slider_gap_size:
+            draw = False 
+            for e in events:
+                if e.type == pygame.MOUSEBUTTONDOWN:
+                    # scroll down
+                    if e.button == 4:
+                        slider_centre = max(slider_centre - self.scroll_amount, slider_range[0])
+                        draw = True 
+                    # scroll up
+                    if e.button == 5:
+                        slider_centre = min(slider_centre + self.scroll_amount, slider_range[1])
+                        draw = True 
+
+            if draw:
+                self.draw(screen, self.surfaces[1], slider_centre, slider_range)
+        
+        pygame.display.update()
+        fps_limiter.tick(constants.FPS)
+        
+
 
     def draw(self, screen, help_surface, slider_centre, slider_range):
         '''
