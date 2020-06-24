@@ -364,7 +364,7 @@ class Game:
 
             if win is not None: # should someone win
                 if win[0].startswith("T"):
-                    win_message = "Turn limit reached.Player" + str(win[1]) = " Wins!"
+                    win_message = "Turn limit reached.Player" + str(win[1]) + " wins!"
                 elif win[0].startswith("G"):
                     win_message = "Generation limit reached.Player" + str(win[1]) + " Wins!"
                 elif win[0].startswith("S"):
