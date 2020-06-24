@@ -414,8 +414,42 @@ class Help:
     def get_surfaces(self):
         '''
         Retrieves surfaces for the help screen. 
+
+        Gets the help_info.txt and outputs it when key pressed for help.
         '''
-        pass 
+        f = "help_info.txt"
+        text = open(f).read().split("++") # splits into two sections 
+        for section in range(len(text)):
+            text[section] = text[section].split("\n") # split into lines
+        help_surfaces = []
+
+        for section in text:
+            extra = 0 # checks to see how big the surface must be for the text to fit 
+            for _ in range(2): # writes it onto the surfave
+                help_surface = pygame.Surface(((self.width - self.slider_width)
+                                         // 2 -self.section_gap_size - self.slider_gap_size, 
+                                        extra))
+
+                help_surface.fill(self.color["Background"])
+                extra = 0 
+                for line in section:
+                    if line.startswith("**"): # ** == bold text
+                        size = self.title_size
+                        line = line[2:]
+                    else:
+                        size =self.text_size
+                    indent = 0 
+                    while line.startswith("--"): # -- === indented text
+                        indent += 1 
+                        line = line[2:]
+                    extra += write(help_surface, indent * self.indent_size, extra, line,
+                                self.color["Text"], size, 
+                                max_len=help_surface.get_width()
+                                            - indent * self.indent_size) + self.section_gap_size
+
+            help_surfaces.append(help_surface)
+        return help_surfaces
+
 
 
 def write(self, screen, x, y, text, color, size, max_len=None, gap=0,Font=Font, rotate=0,
