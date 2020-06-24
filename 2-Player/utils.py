@@ -262,7 +262,46 @@ class Game:
         '''
         Initialize all Game constants
         '''
-        pass
+        self.width = constants.G_WIDTH
+        self.height = constants.G_HEIGTH
+        self.size = constants.G_SIZE
+        self.cell_gap = constants.G_CELLGAP
+        self.wrap = True 
+        self.cushion = 0 
+        self.turns = 0 
+        self.gens = 0 
+        self.num_of_players = constants.G_NUMOFPLAYERS
+        self.player_names = constants.G_PLAYERNAMES
+        self.preview_size = constants.G_PREVIEWSIZE
+        self.set_up_chances = constants.G_SETUPCHANCES[:self.num_of_players + 1]
+        self.text_size = constants.G_TEXTSIZE
+        self.right_column_size = constants.G_RIGHTCOLUMNSIZE
+        self.button_height = constants.G_BUTTONHEIGHT
+        self.button_border_size = constants.G_BUTTONBORDERSIZE
+        self.win_message_weight = constants.G_WINMESSAGEWIDTH
+        self.win_message_height = constants.G_WINMESSAGEHEIGHT
+        self.part_immune = constants.G_PARTIMMUNE
+        self.full_immune = constants.G_FULLIMMUNE
+        self.full_immune_time = constants.G_FULLIMMUNETIME
+        self.full_immune_kill = constants.G_FULLIMMUNEKILL
+        self.color = constants.G_COLOR
+        self.current_player = 1 
+        self.is_turn_limit = constants.G_ISTURNLIMIT
+        self.turn_limit = constants.G_TURNLIMIT
+        self.is_gen_limit = constants.G_ISGENLIMIT
+        self.gen_limit = constants.G_GENLIMIT
+        self.board_amount_win = constants.G_BOARDAMOUNTWIN
+        self.board_amount = constants.G_BOARDAMOUNT
+        self.player_amount_win = constants.G_PLAYERAMOUNTWIN
+        self.player_amount = constants.G_PLAYERAMOUNT
+        self.starting_turns = constants.G_STARTINGTURNS
+        self.fairer_turns = constants.G_FAIRERTURNS
+        self.started = False 
+        self.turns_per_round = constants.G_TURNSPERROUND
+        self.players = [Player(n, self.color["Player" + str(n)], self.starting_turns)
+                        for n in range(1, self.num_of_players + 1)]
+
+
 
     def run(self, screen, board):
         '''Runs the Game'''

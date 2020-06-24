@@ -110,7 +110,7 @@ G_CELLGAP = 2  # The gap between each cell
 
 G_NUMOFPLAYERS = 2 # How many players there are : 2-4
 
-G_PlayerNames = ["Player1", "Player2", "Player3", "Player4"] # Player's name
+G_PLAYERNAMES = ["Player1", "Player2", "Player3", "Player4"] # Player's name
 
 G_PREVIEWSIZE = 18  # The size of the cells in preview mode
 
