@@ -278,9 +278,11 @@ class Game:
         self.right_column_size = constants.G_RIGHTCOLUMNSIZE
         self.button_height = constants.G_BUTTONHEIGHT
         self.button_border_size = constants.G_BUTTONBORDERSIZE
-        self.win_message_weight = constants.G_WINMESSAGEWIDTH
+        self.win_message_width = constants.G_WINMESSAGEWIDTH
         self.win_message_height = constants.G_WINMESSAGEHEIGHT
         self.part_immune = constants.G_PARTIMMUNE
+        self.part_immune_time = constants.G_PARTIMMUNETIME
+        self.part_immune_kill = constants.G_PARTIMMUNEKILL
         self.full_immune = constants.G_FULLIMMUNE
         self.full_immune_time = constants.G_FULLIMMUNETIME
         self.full_immune_kill = constants.G_FULLIMMUNEKILL
@@ -305,7 +307,105 @@ class Game:
 
     def run(self, screen, board):
         '''Runs the Game'''
-        pass 
+        board.update()
+        board.draw(screen)
+        screen = pygame.display.set_mode(board.size * board.width + self.right_column_size,
+                                         board.size * board.height)
+
+        screen.fill(self.color["Background"])
+        fps_limiter = pygame.time.Clock()
+        if not self.started: # sets the game 
+            self.started = True 
+            if self.fairer_turns:
+                for p in range(self.num_of_players // 2):
+                    self.players[p].spare_turns -= self.turns_per_round // 2
+
+        while True:
+            caption = " - generations:" + str(self.gens) # generation information
+            if self.is_gen_limit:
+                caption += ", (%s)" % str(self.gen_limit)
+            caption += ", Turns:" + str(self.turns)
+            if self.is_turn_limit:
+                caption += " (%s)" % str(self.turn_limit)
+            if self.board_amount_win:
+                caption += ", Cells needed to win:" + str(math.floor(self.board_amount *
+                                                                     self.width * self.height))
+            
+            if self.part_immune:
+                caption += ", Part Immune after %s Turns" % str(self.part_immune_time)
+            if self.full_immune:
+                caption += ", Fully Immune after %s Turns" % str(self.full_immune_time)
+            
+            pygame.display.set_caption("Conways Game of Life: Game" + caption)
+            player_scores = self.get_player_score(board)
+            for p in range(self.num_of_players):
+                self.players[p].num_of_cells = player_scores[p + 1]
+            self.players[self.current_player - 1].spare_turns += self.turns_per_round # returns current
+            turn = self.take_turn(screen, board, self.current_player)
+            if turn == "Go Back":
+                self.players[self.current_player -1].spare_turns -= self.turns_per_round
+                return False # no one won, so false is returned and player loses those turns. 
+            else:
+                board.impose_turns(turn, self.current_player)
+                self.players[self.current_player - 1].spare_turns -= len(turn[1])
+                screen.fill(self.color["Background"])
+                board.draw(screen)
+
+            if turn[0] is not None:
+                self.gens += 1 
+            if self.current_player == self.num_of_players:
+                self.current_player = 1 
+                self.turns += 1
+            else:
+                self.current_player += 1
+            
+            win = self.check_for_wins(board, self.turns, self.gens)
+            fps_limiter.tick(constants.FPS)
+
+            if win is not None: # should someone win
+                if win[0].startswith("T"):
+                    win_message = "Turn limit reached.Player" + str(win[1]) = " Wins!"
+                elif win[0].startswith("G"):
+                    win_message = "Generation limit reached.Player" + str(win[1]) + " Wins!"
+                elif win[0].startswith("S"):
+                    win_message = "Player" + str(win[1] + "got enough cells to win.")
+                else:
+                    win_message = "Player" + str(win[1]) + "Got more cells than their openent"
+
+                pygame.draw.rect(screen, (self.color["Highlighter"]), 
+                                 ((screen.get_width() - self.win_message_width)
+                                 // 2 - self.button_border_size,
+                                 (screen.get_height() - self.win_message_height)
+                                 // 2 - self.button_border_size,
+                                 self.win_message_width + 2 * self.button_border_size,
+                                 self.win_message_height + 2 * self.button_border_size))
+                
+                pygame.draw.rect(screen, (self.color["Background"]),
+                                 ((screen.get_width() - self.win_message_width) // 2,
+                                 (screen.get_height() - self.win_message_height) // 2,
+                                 self.win_message_width, self.win_message_height))                
+                write(screen, screen.get_width() // 2, screen.get_height() // 2, win_message,
+                      self.color["Text"], self.text_size, max_len=self.win_message_width,
+                      alignment=("centre", "centre")) # this writes the win message 
+
+                pygame.display.update()
+                board_view = False # win message disappears win ESC is pressed 
+                while True:
+                    if check_quit(pygame.event.get()):
+                        if board_view:
+                            self.started = False
+                            return True 
+                        else:
+                            board_view = True 
+                            screen.fill(self.color["Background"])
+                            board.draw(screen)
+                            self.draw_right_column(screen, self.get_player_score(board),
+                                                   (False, False), (0,0,0,0), 0, 
+                                                   clickable=False)
+                            
+                            pygame.display.update()
+                            fps_limiter.tick(constants.FPS)
+
 
 
     def take_turn(self, screen, board, player_num):
