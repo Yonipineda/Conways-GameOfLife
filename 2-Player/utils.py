@@ -250,7 +250,36 @@ class Simulation:
         '''
         Draw sliders with the y coordinates
         '''
-        pass 
+        pygame.draw.rect(screen, self.color["Background"],
+                         ((self.button_start, self.start_of_slider - self.notch_length),
+                         (self.button_start + board.cell_gap + self.highlight_size + self.slider_size,
+                         self.end_of_slider))) 
+
+
+        pygame.draw.line(screen, self.color["Text"], (self.slider_y, self.start_of_slider),
+                         (self.slider_y, self.end_of_slider))
+        
+        for n in range(self.num_of_notches): # draws the notches 
+            pygame.draw.line(screen, self.color["Text"],
+                             (self.slider_y - self.notch_length // 2,
+                             self.start_of_slider + int(n * self.space_between_notches)),
+                             (self.slider_y + self.notch_length // 2,
+                             self.start_of_slider + int(n * self.space_between_notches)))
+            write(screen, (self.size * self.width + self.slider_y - self.notch_length) // 2,
+                  (self.start_of_slider + self.end_of_slider) // 2, "Speed", self.color["Text"],
+                  self.speed_size, rotate=90, alignment=("centre", "centre"))
+            if gps_limit: # retrieves correct color for the pointers 
+                color = "Highlighter"
+            else:
+                color = "Unselected"
+            
+            pygame.draw.polygon(screen, self.color[color],
+                                (( self.slider_y + self.notch_length // 2, y),
+                                (self.slider_y + self.notch_length, y - self.notch_length // 2),
+                                (self.slider_y + 2 * self.notch_length, y - self.notch_length // 2),
+                                (self.slider_y + 2 * self.notch_length, y + self.notch_length // 2),
+                                (self.slider_y + self.notch_length, y + self.notch_length // 2)))
+            pygame.display.update()
 
 
 
