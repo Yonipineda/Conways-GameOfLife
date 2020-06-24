@@ -189,7 +189,7 @@ class GameBoard(Board):
         shows cells as numbers w/ info such as how long they've been alive.
         '''
         temp_board = copy.deepcopy(self) 
-        temp_board.imp4(turns, player)
+        temp_board.impose_turns(turns, player)
         for a in temp_board.cell:
             for b in a:
                 b.draw(screen, self.size - self.cell_gap, self)
