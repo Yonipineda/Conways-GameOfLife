@@ -389,7 +389,26 @@ class Help:
         '''
         Draw the right hand side bit of text and slider at given levels
         '''
-        pass 
+        pygame.draw.rect(screen, self.color["Background"], 
+                         ((self.width - self.slider_width - self.section_gap_size)
+                         // 2 - self.slider_gap_size, 0, self.width, self.height))
+
+        pygame.draw.rect(screen, self.color["Slider"],
+                         (self.width - self.slider_gap_size - self.slider_width),
+                         slider_centre - self.slider_length // 2,
+                         self.slider_width, self.slider_length)
+        
+        help_rect = help_surface.get_rect()
+        text_range = (self.section_gap_size, help_surface.get_height()
+                      - self.height + 2 * self.section_gap_size)
+
+        top_y = text_range[0] - (text_range[1] - text_range[0]) * (slider_centre - slider_range[0])\
+                                // (slider_range[1] - slider_range[0])
+        
+        help_rect.topleft = (int((self.width - self.slider_width) // 2) + self.slider_gap_size, top_y)
+
+        screen.blit(help_surface, help_rect) # sets position of help surface in relation to the screen
+        pygame.display.update()
 
 
     def get_surfaces(self):
