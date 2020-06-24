@@ -39,7 +39,7 @@ This implementation is a tad different. Find more detail down below.
 
 **Conways Game of Life: 2-Player Version
 
-This game has interactivity, additionally, you can play with a fried. It is based on the 
+This game has interactivity, additionally, you can play with a friend. It is based on the 
 mechanics of the simulator, where players take it in turns to either place one of their own 
 cells or kill any living cell. They can also choose to "Generate" the board, which is to say;
 go forward a generation, at any point in *their* round. They don't have to use this ability,
