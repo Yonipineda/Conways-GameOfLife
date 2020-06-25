@@ -542,8 +542,25 @@ class Game:
                                 bool -> whether or not turn was valid
                                 int -> num of turns the move should take
         '''
-        pass 
-
+        temp_board = copy.deepcopy(board) 
+        temp_board.impose_turns(turns, player_num)
+        if temp_board.cell[a][b].current_player == player_num:
+            return kill, 1 
+        elif temp_board.cell[a][b].current_state == Dead:
+            return not kill, 1
+        else:
+            if temp_board.cell[a][b].full_immune:
+                if turns_left >= self.full_immune_kill:
+                    return kill, self.full_immune_kill
+                else:
+                    return False, 1
+            elif temp_board.cell[a][b].part_immune:
+                if turns_left >= self.part_immune_kill:
+                    return kill, self.part_immune_kill
+                else:
+                    return False, 1
+            else:
+                return kill, 1
 
     def get_player_score(self, board, turns=None, player_num=0):
         ''' 
