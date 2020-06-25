@@ -1,5 +1,7 @@
 # Cellular Automata and Conway's "Game of Life"
 
+Try out the game using this [repl link](https://repl.it/join/pqtetkrf-yonipineda).
+
 
 **NOTE: This is not a data science project.** If you're in the data
 science track and want to do a DS-specific project, jump to the [Data
