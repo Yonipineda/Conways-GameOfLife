@@ -566,7 +566,20 @@ class Game:
         ''' 
         Returns num of cells each player has on board
         '''
-        pass 
+        player_scores = [0 for _ in range(self.num_of_players + 1)]
+        if turns is None:
+            for a in range(self.width):
+                for b in range(self.height):
+                    player_scores[board.cell[a][b].current_player] += 1
+        else:
+            temp_board = copy.deepcopy(board)
+            temp_board.impose_turns(turns, player_num)
+            for a in range(self.width):
+                for b in range(self.height):
+                    player_scores[temp_board.cell[a][b].current_player] += 1
+        
+        return player_scores
+
 
 
     def draw_right_column(self, screen, player_scores, on_button, turns_used,
