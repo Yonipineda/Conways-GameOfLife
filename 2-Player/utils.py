@@ -591,7 +591,19 @@ class Game:
 
     def check_for_wins(self, board, turns, generations):
         ''' Check for wins '''
-        pass 
+        player_scores = self.get_player_score(board)
+        del player_scores[0]
+        if self.is_turn_limit and turns >= self.turn_limit:
+            return "Turn Limit reached.", player_scores.index(max(player_scores)) + 1
+        if self.is_gen_limit and generations >= self.gen_limit:
+            return "Generation limit reached.", player_scores.index(max(player_scores)) + 1
+        board_tot = self.height * self.width
+        for a in range(len(player_scores)):
+            if self.board_amount_win and player_scores[a] > board_tot * self.board_amount:
+                return "Board amount threshold passed.", a + 1
+            for b in range(len(player_scores)):
+                if self.player_amount_win and player_scores[a] * self.player_amount > player_scores[b]:
+                    return "Score difference threshold passed.", a + 1
 
 
 
