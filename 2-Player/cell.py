@@ -4,6 +4,14 @@ import grid
 import utils 
 import copy 
 
+"""
+THIS FILE SERVES NO FUNCTION ANYMORE:
+
+        Decided to put all the logic for cell in board.
+"""
+
+
+
 class Cell:
     '''Cell class''' 
     def __init__(self, a, b, current_state, next_state, board,

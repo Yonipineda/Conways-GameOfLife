@@ -1,36 +1,45 @@
-# Grid Shape Configurations
+# These are the patterns 
+# still lifes
+# oscillators
+# spaceships
 
-def get(shape_num, a, b, state):
-    '''
-    Returns a preset shape.
-    '''
-    if shape_num == 1:
-        shape = [[0,1,0],
-                 [0,0,1],
-                 [1,1,1]]
+def get(shape_no, a, b, state):
+    """Returns a preset shape,
+    and new coordinates if it can't be placed where originally intended."""
+    if shape_no == 1:
+        shape = [[0, 1, 0],
+                 [0, 0, 1],
+                 [1, 1, 1]]
 
-    elif shape_num == 2:
-        shape = [[0,1,0],
-                 [1,1,1],
-                 [1,0,1],
-                 [0,1,0]]
+    elif shape_no == 2:
+        shape = [[0, 1, 0],
+                 [1, 1, 1],
+                 [1, 0, 1],
+                 [0, 1, 0]]
 
-    elif shape_num == 3:
-        k = [1,0,1,0,1]
-        j = [1,0,0,0,1]
-        shape = [k,j,j,j,k] 
+    elif shape_no == 3:
+        c = [1, 0, 1, 0, 1]
+        d = [1, 0, 0, 0, 1]
+        shape = [c, d, d, d, c]
 
-    elif shape_num == 4:
-        shape = [[0,1,1,0,1,1,0],
-                 [0,1,1,0,1,1,0],
-                 [0,0,1,0,1,0,0],
-                 [1,0,1,0,1,0,1],
-                 [1,0,1,0,1,0,1],
-                 [1,1,0,0,0,1,1]]
-    
-    elif shape_num == 6:
-        shape = [[0 for Shape in range(15)] for Shape in range(38)]
-        to_be_birthed = [[23, 24, 34, 35], 
+    elif shape_no == 4:
+        shape = [[0, 1, 1, 1, 1],
+                 [1, 0, 0, 0, 1],
+                 [0, 0, 0, 0, 1],
+                 [1, 0, 0, 1, 0]]
+
+    elif shape_no == 5:
+        shape = [[0, 1, 1, 0, 1, 1, 0],
+                 [0, 1, 1, 0, 1, 1, 0],
+                 [0, 0, 1, 0, 1, 0, 0],
+                 [1, 0, 1, 0, 1, 0, 1],
+                 [1, 0, 1, 0, 1, 0, 1],
+                 [1, 1, 0, 0, 0, 1, 1]]
+
+    elif shape_no == 6:
+        shape = [[0 for _ in range(15)] for _ in range(38)]  
+        to_be_birthed = [[23, 24, 34, 35],  
+                         [22, 24, 34, 35],          
                          [0, 1, 9, 10, 22, 23],
                          [0, 1, 8, 10],
                          [8, 9, 16, 17],
@@ -39,21 +48,20 @@ def get(shape_num, a, b, state):
                          [35, 36],
                          [35, 37],
                          [35],
-                         [],  
+                         [], 
                          [],
                          [24, 25, 26],
                          [24],
                          [25]]
-        
-        for b in range(len(to_be_birthed)):
-            for d in to_be_birthed[b]:
-                shape[d][b] = 1
+        for c in range(len(to_be_birthed)):
+            for d in to_be_birthed[c]:
+                shape[d][c] = 1
 
-    elif shape_num == 7: shape = [[1], [1], [1], [1], [1], [1], [1], [1], [1], [1]]
+    elif shape_no == 7: shape = [[1], [1], [1], [1], [1], [1], [1], [1], [1], [1]]
 
-    elif shape_num == 8: shape = [[0,1,0], [1,1,1], [1,0,0]]
+    elif shape_no == 8: shape = [[0, 1, 0], [1, 1, 1], [1, 0, 0]]
 
     else: shape = [[0]]
 
-    return (shape, min(a, state.width + 2 * state.cushion - len(shape)),
-            min(b, state.height + 2 * state.cushion - len(shape[0])))
+    return (shape, min(a, state.Width + 2 * state.Cushion - len(shape)),
+            min(b, state.Height + 2 * state.Cushion - len(shape[0])))

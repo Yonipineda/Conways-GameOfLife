@@ -2,7 +2,6 @@
 
 '''
 Initial Explainer:
-
             M -> Main Menu Parameters 
             S -> Simulator Parameters 
             G -> Game Mode Parameters 
