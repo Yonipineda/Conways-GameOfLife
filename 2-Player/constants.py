@@ -222,7 +222,7 @@ H_SLIDERGAPSIZE = 5  # The gap between the slider and the edge/text
 
 H_SLIDERLENGTH = 100  # The length of the slider
 
-H_Width = 1000 + H_SLIDERWIDTH + H_SLIDERGAPSIZE # The width of the window
+H_WIDTH = 1000 + H_SLIDERWIDTH + H_SLIDERGAPSIZE # The width of the window
 
 H_SCROLLAMOUNT = 50  # The amount scrolled with each turn of the wheel
 

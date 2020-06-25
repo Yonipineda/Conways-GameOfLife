@@ -3,7 +3,6 @@ import constants
 import math 
 import time 
 import copy 
-import sys 
 
 # Initialize general constant parameters
 Font = constants.FONT 
@@ -461,7 +460,7 @@ class Game:
                         del turn[1][-1] # gives back the turns used 
                         turns_used[player_num - 1]\
                             -= self.check_turn_is_valid(board, turn, player_num, t[0],
-                            t[1], t[2], self.full_immune_kill[1])
+                            t[1], t[2], self.full_immune_kill)[1]
 
                 held_down["esc"] = True
             else:
@@ -582,11 +581,79 @@ class Game:
 
 
 
-    def draw_right_column(self, screen, player_scores, on_button, turns_used,
-                          generated, clickable=None, update=True):
-                          '''
-                          Column drawn on right-handside of screen'''
-                          pass 
+    def draw_right_column(self, screen, player_scores, on_button, turns_used, generated,
+                          clickable=None, update=True):
+                '''
+                Column drawn on right-handside of screen
+                '''
+                pygame.draw.rect(screen, self.color["Background"],
+                                (screen.get_width() - self.right_column_size, 0,
+                                self.right_column_size, screen.get_height()))
+                # erase the last drawing of the col
+                write(screen, screen.get_width() - self.right_column_size // 2, self.button_border_size,
+                    self.player_names[self.current_player - 1] + "'s turn",
+                    self.color["Player" + str(self.current_player - 1)], self.text_size,
+                    max_len=self.right_column_size, alignment=("centre", "top"))
+
+                button_centres = [[screen.get_width() - self.right_column_size // 2,
+                                screen.get_height() - 2 * self.button_border_size - self.button_height // 2
+                                - a * (self.button_height + 2 * self.button_border_size)] for a in range(2)]
+
+                for a in range(2): # draws the buttons 
+                    pygame.draw.rect(screen, self.color["ButtonBorder"],
+                                        (button_centres[a][0] - self.button_height // 2+ self.button_border_size,
+                                        self.right_column_size - 2 * self.button_border_size, self.button_height))
+
+                    pygame.draw.rect(screen, self.color["Background"],
+                                        (button_centres[a][1] - self.button_height // 2
+                                        + 2 * self.button_border_size,
+                                        self.right_column_size - 4 * self.button_border_size,
+                                        self.button_height - self.button_border_size - 2))
+
+                if clickable is None: 
+                    button_colors = [self.color["Text"] for _ in range(2)]
+                    if on_button[0]:
+                        button_colors[0] = self.color["Highlighter"]
+                    if generated:
+                        button_colors[1] = self.color["Unselectable"]
+                    else:
+                        if on_button[1]:
+                            button_colors[1] = self.color["Highlighter"]
+                else:
+                    button_colors = [self.color["Unselectable"] for _ in range(2)]
+
+                button_text = ("End Turn.", "Generate")
+                for a in range(2): # write in buttons: end turn & generate
+                    write(screen, button_centres[a][0], button_centres[a][1], button_text[a],
+                            button_colors[a], self.text_size,max_len=self.right_column_size,
+                            alignment=("centre", "centre"))
+
+                bottom = (screen.get_width() - self.right_column_size + self.button_border_size,
+                            button_centres[-1][-1] - self.button_border_size - self.button_height // 2)
+
+                extra_space = 0
+                # writes in the players info
+                for n in [self.num_of_players - a - 1 for a in range(self.num_of_players)]: 
+                    col = self.players[n].color 
+                    extra_space += 4 * self.button_border_size
+                    extra_space += write(screen, bottom[0], bottom[1] - extra_space,
+                                            "Spare Turns: " + str(self.players[n].spare_turns - turns_used[n]),
+                                            col, int(self.text_size / 1.5),
+                                            alignment=("left", "bottom")) + 2 * self.button_border_size
+                    
+                    extra_space += write(screen, bottom[0], bottom[1] - extra_space, 
+                                            "Cells: " + str(player_scores[n + 1]), col,
+                                            int(self.text_size / 1.5),
+                                            alignment=("left", "bottom")) + 2 * self.button_border_size
+
+                    extra_space += write(screen, bottom[0], bottom[1] - extra_space,
+                                            self.player_names[n], col, int(self.text_size / 1.2),
+                                            max_len=self.right_column_size - 2 * self.button_border_size,
+                                            alignment=("left", "bottom"))
+
+                if update:
+                    pygame.display.update()
+
 
 
     def check_for_wins(self, board, turns, generations):
@@ -622,7 +689,7 @@ class Help:
         self.slider_width = constants.H_SLIDERWIDTH
         self.slider_gap_size = constants.H_SLIDERGAPSIZE
         self.slider_length = constants.H_SLIDERLENGTH
-        self.width = constants.H_Width
+        self.width = constants.H_WIDTH
         self.height = 600 
         self.scroll_amount = constants.H_SCROLLAMOUNT
         self.color = constants.H_COLOR
@@ -655,13 +722,15 @@ class Help:
         x, y = pygame.mouse.get_pos()
         if pygame.mouse.get_pressed()[0]:
             if slider_last_turn:
+            #    mouse_start = None
                 y = max(min(y + slider_range - mouse_start, slider_range[1]), slider_range[0])
                 self.draw(screen, self.surfaces[1], y, slider_range)
             elif -2 * self.slider_gap_size - self.slider_width < x - self.width < 0:
-                slider_last_turn = 0 
+                slider_last_turn = True 
                 mouse_start = y 
                 # if mouse not clicked 
-                if not slider_centre - self.slider_length / 2 < y < slider_centre + self.slider_length / 2:
+                if not slider_centre - self.slider_length / 2 <\
+                     y < slider_centre + self.slider_length / 2:
                     slider_centre = y 
                 
         elif slider_last_turn:
@@ -721,8 +790,7 @@ class Help:
 
         Gets the help_info.txt and outputs it when key pressed for help.
         '''
-        f = "help_info.txt"
-        text = open(f).read().split("++") # splits into two sections 
+        text = open("help_info.txt").read().split("++") # splits into two sections 
         for section in range(len(text)):
             text[section] = text[section].split("\n") # split into lines
         help_surfaces = []
@@ -731,8 +799,8 @@ class Help:
             extra = 0 # checks to see how big the surface must be for the text to fit 
             for _ in range(2): # writes it onto the surfave
                 help_surface = pygame.Surface(((self.width - self.slider_width)
-                                         // 2 -self.section_gap_size - self.slider_gap_size, 
-                                        extra))
+                                               // 2 - self.section_gap_size - self.slider_gap_size,
+                                               extra))
 
                 help_surface.fill(self.color["Background"])
                 extra = 0 
@@ -747,21 +815,21 @@ class Help:
                         indent += 1 
                         line = line[2:]
                     extra += write(help_surface, indent * self.indent_size, extra, line,
-                                self.color["Text"], size, 
-                                max_len=help_surface.get_width()
-                                            - indent * self.indent_size) + self.section_gap_size
+                                self.color["Text"], size,
+                               max_len=help_surface.get_width() 
+                                    - indent * self.indent_size) + self.section_gap_size
 
             help_surfaces.append(help_surface)
         return help_surfaces
 
 
 
-def write(self, screen, x, y, text, color, size, max_len=None, gap=0,Font=Font, rotate=0,
+def write(screen, x, y, text, color, size, max_len=None, gap=0,font=Font, rotate=0,
             alignment=("left", "top")):
             '''
             Puts text onto the screen at point x,y. 
             '''
-            font_obj = pygame.Font.SysFont(Font, size)
+            font_obj = pygame.font.SysFont(font, size)
             if text == "": # checks if its a blank line
                 line = 1 
                 extra_space = size 
@@ -800,7 +868,7 @@ def write(self, screen, x, y, text, color, size, max_len=None, gap=0,Font=Font, 
 
 
 
-def check_quit(self, events):
+def check_quit(events):
     '''
     Checks whether the player tried to quit the game.
 
@@ -810,14 +878,14 @@ def check_quit(self, events):
         if event.type == pygame.QUIT:
             quit_game()
         if pygame.key.get_pressed()[pygame.K_SPACE]:
-            return True 
-    
+            return True   
     return False 
 
 
-def quit_game(self):
+def quit_game():
     ''' Quits Game ''' 
     pygame.quit()
+    import sys
     sys.exit(0)
 
 

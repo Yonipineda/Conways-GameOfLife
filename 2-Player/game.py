@@ -52,5 +52,5 @@ while MenuChoice in (Menu.buttons[:3]): # if non-quit button was pressed.
         Help.display(Screen)
     MenuChoice = Menu.get_choice(Screen) # another choice is requested when menu is returned
 
-set_up.quit_game()
+utils.quit_game()
 
