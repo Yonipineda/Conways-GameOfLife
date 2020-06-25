@@ -439,7 +439,99 @@ class Game:
 
     def take_turn(self, screen, board, player_num):
         ''' Returns the turn that the player wants to do '''
-        pass 
+        board.draw(screen)
+        turn = [None, []] # first value is where the gen will happe, if it all.
+        turn_chosen = False # list that contains info about the turns 
+        held_down = {"mouse0": True, "mouse2": False, "esc": False,
+                     "space": True, "f": False, "j": False}
+        show_future = True 
+        show_alive_for = False 
+        turns_used = [0 for _ in range(self.num_of_players)]
+        fps_limiter = pygame.time.Clock()
+        while not turn_chosen:
+            events = pygame.event.get()
+            if check_quit(events) and not held_down["esc"]: # if esc pressed but was not last turn
+                if len(turn[1]) == 0 and turn[0] is None:
+                    return "Go Back"
+                else:
+                    if turn[0] == len(turn[1]): # if the gen needs to be undone 
+                        turn[0] = None
+                    else:
+                        t = turn[1][-1]
+                        del turn[1][-1] # gives back the turns used 
+                        turns_used[player_num - 1]\
+                            -= self.check_turn_is_valid(board, turn, player_num, t[0],
+                            t[1], t[2], self.full_immune_kill[1])
+
+                held_down["esc"] = True
+            else:
+                held_down["esc"] = False 
+
+            x, y = pygame.mouse.get_pos()
+            a, b = board.get_square(x, y)
+            if 0 <= a < board.width + board.cushion and 0 <= b < board.height + board.cushion:
+                kill = None 
+                if not (held_down["mouse0"] or held_down["mouse2"])\
+                    and self.players[player_num - 1].spare_turns > turns_used[player_num - 1]:
+
+                    if pygame.mouse.get_pressed()[0]:
+                        turn_validation =\
+                            self.check_turn_is_valid(board, turn, player_num, a, b, False,
+                                                     self.players[player_num - 1].spare_turns
+                                                     - turns_used[player_num -1])
+
+                        if turn_validation[0]:
+                            kill = False 
+                    elif pygame.mouse.get_pressed()[2]:
+                        turn_validation =\
+                            self.check_turn_is_valid(board, turn, player_num, a, b, True,
+                                                     self.players[player_num - 1].spare_turns
+                                                     - turns_used[player_num - 1])
+
+                        if turn_validation[0]:
+                            kill = True
+                if kill is not None: # the turn is valid 
+                    turn[1].append([a, b, kill])
+                    turns_used[player_num - 1] += turn_validation[1]
+            if pygame.key.get_pressed()[pygame.K_SPACE] and not held_down["space"]:
+                turn_chosen = True 
+            if pygame.key.get_pressed()[pygame.K_F] and not held_down["f"]:
+                show_future = not show_future
+                show_alive_for = False 
+            if pygame.key.get_pressed()[pygame.K_J] and not held_down["j"]:
+                show_alive_for = not show_alive_for
+                show_future = False 
+            on_button = [False, False] # checks whether the mouse is on either button
+
+            if 2 * self.button_border_size < screen.get_width()\
+                - x < self.right_column_size - 2 * self.button_border_size:
+                if 0 < screen.get_height() - y - self.button_border_size < self.button_height:
+                    if pygame.mouse.get_pressed()[0] and not held_down["mouse0"]:
+                        turn_chosen = True 
+                    on_button[0] = True 
+                elif 0 > y - screen.get_height() + 3 * self.button_border_size\
+                    + self.button_height > -self.button_height:
+                    if pygame.mouse.get_pressed()[0] and turn[0] is None:
+                        turn[0] = len(turn[1])
+                    on_button[1] = True 
+
+            self.draw_right_column(screen, self.get_player_score(board, turns=turn,
+                                   player_num=player_num), on_button,
+                                   turns_used, not turn[0] is None, update=False)
+            if show_alive_for:
+                board.show_alive(screen, self.text_size, self.color, turn, player_num)
+            else:
+                board.show_future(screen, turn, player_num, smaller=show_future)
+            
+            held_down["mouse0"] = pygame.mouse.get_pressed()[0]
+            held_down["mouse2"] = pygame.mouse.get_pressed()[2]
+            for key in (("space", "SPACE"), ("f", "f"), ("j", "j")): # update held_down dict
+                held_down[key[0]] = eval("pygame.key.get_pressed()[pygame.K_%s]" % key[1])
+            pygame.display.update()
+            fps_limiter.tick(constants.FPS)
+        return turn 
+
+
 
     def check_turn_is_valid(self, board, turns, player_num, a, b, kill, turns_left):
         '''
