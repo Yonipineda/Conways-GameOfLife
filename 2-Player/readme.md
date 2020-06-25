@@ -1,5 +1,7 @@
 # 2-Player Conways Game Of Life
 
+This is a project for my Computer Science build week at [Lambda School](https://lambdaschool.com/)
+
  
 ## Conways Game of Life: Help Screen 
 
