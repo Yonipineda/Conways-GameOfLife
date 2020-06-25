@@ -11,7 +11,7 @@ pygame.init()
 
 # Initialize screen display 
 Screen = pygame.display.set_mode((1080, 650))
-pygame.display.set_icon(pygame.image.load("grid.png"))
+pygame.display.set_icon(pygame.image.load("assets/grid.png"))
 pygame.event.set_allowed(None) # Tells pygame not to check for any inputs
 
 # Allowed events 
