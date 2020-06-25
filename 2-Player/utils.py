@@ -593,10 +593,12 @@ class Game:
         ''' Check for wins '''
         player_scores = self.get_player_score(board)
         del player_scores[0]
+
         if self.is_turn_limit and turns >= self.turn_limit:
             return "Turn Limit reached.", player_scores.index(max(player_scores)) + 1
         if self.is_gen_limit and generations >= self.gen_limit:
             return "Generation limit reached.", player_scores.index(max(player_scores)) + 1
+            
         board_tot = self.height * self.width
         for a in range(len(player_scores)):
             if self.board_amount_win and player_scores[a] > board_tot * self.board_amount:
