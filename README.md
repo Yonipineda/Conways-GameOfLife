@@ -11,7 +11,7 @@ This is a project for my Computer Science build week at [Lambda School](https://
 
 2. Click on the picture below to play the game!
 
-[![Main Menu](2-Player/assets/game.png]](https://repl.it/@Yonipineda/Game-of-Life#readme.md)
+[![Main Menu](2-Player/assets/game.png)](https://repl.it/@Yonipineda/Game-of-Life#readme.md)
 
  
 ## Conways Game of Life: Help Screen 
