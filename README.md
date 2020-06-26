@@ -1,5 +1,8 @@
 # Conways Game Of Life
 
+![Main Menu](2-Player/assets/game.png)
+
+
 This is a project for my Computer Science build week at [Lambda School](https://lambdaschool.com/)
 
 You can play the game by clicking on this [repl link](https://repl.it/@Yonipineda/Game-of-Life#readme.md)
