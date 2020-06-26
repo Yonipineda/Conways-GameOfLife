@@ -7,11 +7,11 @@ This is a project for my Computer Science build week at [Lambda School](https://
 1. Install the package from PyPi
 > pip install Conways-Game-of-Life==1.0.0
 
-  Link to the installation: (Conways Game of Life)[https://pypi.org/project/Conways-Game-of-Life/1.0.0/]
+  Link to the installation: [Conways Game of Life](https://pypi.org/project/Conways-Game-of-Life/1.0.0/)
 
 2. Click on the picture below to play the game!
 
-[![Main Menu](2-Player/assets/game.png)](https://repl.it/@Yonipineda/Game-of-Life#readme.md)
+[![Main Menu](2-Player/assets/game.png]](https://repl.it/@Yonipineda/Game-of-Life#readme.md)
 
  
 ## Conways Game of Life: Help Screen 
